@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+Your Favorite Drinks
+{% endblock %}
+
+{% block content %}
+<h2>Your Favorite Drinks</h2>
+
+{% if favorites %}
+    <ul>
+        {% for favorite in favorites %}
+        <li id="favorite-{{ favorite.id }}">
+            <h3>{{ favorite.drink_name }}</h3>
+            <img src="{{ favorite.drink_thumb }}" alt="{{ favorite.drink_name }}" width="150">
+            
+            <form method="POST" action="{{ url_for('remove_favorite', favorite_id=favorite.id) }}" class="remove-favorite-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit">Remove from Favorites</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You don't have any favorite drinks yet.</p>
+{% endif %}
+
+<form action="{{ url_for('drink_search') }}" method="get">
+    <button type="submit" class="btn">Go Back to Search</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeForms = document.querySelectorAll('.remove-favorite-form');
+        
+        removeForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const formData = new FormData(this);
+                const actionUrl = this.action;
+
+                formData.append('csrf_token', "{{ csrf_token() }}");
+
+                fetch(actionUrl, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`favorite-${data.favorite_id}`).remove();
+                    } else {
+                        alert(data.message || "An error occurred.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
+

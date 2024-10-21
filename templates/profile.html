@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
+<p>Email: {{ user.email }}</p>
+<p>Phone Number: {{ user.phone_number }}</p>
+<p>Address: {{ user.address }}</p>
+<p>City: {{ user.city }}</p>
+<p>State: {{ user.state }}</p>
+<p>ZIP Code: {{ user.zip }}</p>
+<p>Date of Birth: {{ user.dob.strftime('%B %d, %Y') }}</p>
+
+<form action="{{ url_for('edit_profile') }}" method="get">
+    <button type="submit" class="btn">Edit Profile</button>
+</form>
+
+<form action="{{ url_for('change_password') }}" method="get">
+    <button type="submit" class="btn">Change Password</button>
+</form>
+
+<form action="{{ url_for('delete_account') }}" method="get">
+    <button type="submit" class="btn">Delete Account</button>
+</form>
+
+{% endblock %}
+

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Cocktails by Letter
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Cocktails Starting With "{{ letter.upper() }}"</h1>
+    <ul class="list-unstyled">
+        {% for drink in drinks %}
+            <li class="media my-4">
+                <img src="{{ drink.strDrinkThumb }}" class="mr-3" alt="{{ drink.strDrink }}" style="width: 100px; height: 100px;">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1">{{ drink.strDrink }}</h5>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

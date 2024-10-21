@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}
+Drink Search Results
+{% endblock %}
+
+{% block content %}
+<h2>Drink Search Results</h2>
+
+{% if drinks %}
+    <ul>
+        {% for drink in drinks %}
+        <li id="drink-{{ drink.idDrink }}">
+            <h3>{{ drink.strDrink }}</h3>
+            <img src="{{ drink.strDrinkThumb }}" alt="{{ drink.strDrink }}" width="150">
+            <p><strong>Category:</strong> {{ drink.strCategory }}</p>
+            <p><strong>Alcoholic:</strong> {{ drink.strAlcoholic }}</p>
+            <p><strong>Instructions:</strong> {{ drink.strInstructions }}</p>
+            
+            <form method="POST" action="{{ url_for('add_favorite', drink_id=drink.idDrink) }}" class="favorite-form">
+                <input type="hidden" name="drink_name" value="{{ drink.strDrink }}">
+                <input type="hidden" name="drink_thumb" value="{{ drink.strDrinkThumb }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" id="btn-{{ drink.idDrink }}">Add to Favorites</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No drinks found.</p>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const favoriteForms = document.querySelectorAll('.favorite-form');
+        
+        favoriteForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const formData = new FormData(this);
+                const actionUrl = this.action;
+                const button = this.querySelector('button');
+                
+                formData.append('csrf_token', "{{ csrf_token() }}");
+
+                fetch(actionUrl, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        button.textContent = "Added to Favorites";
+                        button.disabled = true;
+                    } else {
+                        alert(data.message || "An error occurred.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
+

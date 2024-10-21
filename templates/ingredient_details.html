@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+Ingredient Details
+{% endblock %}
+
+{% block content %}
+<h2>Ingredient Details</h2>
+
+{% if ingredients %}
+    <ul>
+        {% for ingredient in ingredients %}
+        <li>
+            <h3>{{ ingredient.strIngredient }}</h3>
+            <p><strong>Description:</strong> {{ ingredient.strDescription }}</p>
+            <p><strong>Type:</strong> {{ ingredient.strType }}</p>
+            <p><strong>Alcohol:</strong> {{ ingredient.strAlcohol }}</p>
+            <p><strong>ABV:</strong> {{ ingredient.strABV }}%</p>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No ingredients found.</p>
+{% endif %}
+<form action="{{ url_for('ingredient_search') }}" method="get">
+    <button type="submit" class="btn">Back to Ingredient Search</button>
+</form>
+{% endblock %}

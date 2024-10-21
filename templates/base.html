@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}What's Your Poison?{% endblock %}</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Global Button CSS -->
+    <style>
+        button, .btn {
+            background-color: #f8f9fa; /* Light gray (default) */
+            border: 1px solid #ced4da; /* Light border */
+            color: #495057; /* Dark text */
+            padding: 5px 10px; /* Consistent padding */
+            font-size: 14px; /* Default font size */
+            border-radius: 4px; /* Rounded corners */
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        button:hover, .btn:hover {
+            background-color: #e2e6ea; /* Slightly darker on hover */
+            color: #212529; /* Darker text on hover */
+        }
+
+        button:focus, .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Blue focus border */
+        }
+
+        button:disabled, .btn:disabled {
+            background-color: #d6d8db; /* Disabled state color */
+            cursor: not-allowed;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bootstrap Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">What's Your Poison?</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('drink_search') }}">Search Drink</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('random_cocktail') }}">Random Cocktail</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('favorites') }}">Favorites</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('ingredient_search') }}">Ingredient Search</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Cocktails by Letter
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+                                <a class="dropdown-item" href="{{ url_for('cocktails_by_letter', letter=letter.lower()) }}">{{ letter }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarAlcoholic" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Filter by Alcoholic
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarAlcoholic">
+                            <a class="dropdown-item" href="{{ url_for('filter_by_alcoholic', type='Alcoholic') }}">Alcoholic</a>
+                            <a class="dropdown-item" href="{{ url_for('filter_by_alcoholic', type='Non_Alcoholic') }}">Non-Alcoholic</a>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages Section -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {% for category, message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container mt-5">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer class="bg-light text-center py-3">
+        <p>&copy; 2024 What's Your Poison. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+

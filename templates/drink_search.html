@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+Search for a Drink
+{% endblock %}
+
+{% block content %}
+<h2>Search for a Drink</h2>
+<form method="GET" action="{{ url_for('search_drink_results') }}">
+    <div>
+        <label for="drink_name">Drink Name:</label>
+        <input type="text" name="drink_name" id="drink_name" placeholder="Enter drink name">
+    </div>
+    <button type="submit">Search</button>
+</form>
+{% endblock %}

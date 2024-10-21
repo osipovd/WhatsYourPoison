@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block header %}
+<h1>Welcome to My Flask App</h1>
+{% endblock %}
+
+{% block content %}
+<h2>Sign Up</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.first_name.label }} {{ form.first_name(size=30) }}
+    </div>
+    <div>
+        {{ form.last_name.label }} {{ form.last_name(size=30) }}
+    </div>
+    <div>
+        {{ form.dob.label }} {{ form.dob() }}
+    </div>
+    <div>
+        {{ form.address.label }} {{ form.address(size=50) }}
+    </div>
+    <div>
+        {{ form.city.label }} {{ form.city(size=30) }}
+    </div>
+    <div>
+        {{ form.state.label }} {{ form.state() }} 
+    </div>
+    <div>
+        {{ form.zip.label }} {{ form.zip(size=5) }}
+    </div>
+    <div>
+        {{ form.phone_number.label }} {{ form.phone_number(size=15) }}
+    </div>
+    <div>
+        {{ form.email.label }} {{ form.email(size=40) }}
+    </div>
+    <div>
+        {{ form.password.label }} {{ form.password() }}
+    </div>
+    <div>
+        {{ form.confirm_password.label }} {{ form.confirm_password() }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}
+
+{% block footer %}
+<p>&copy; 2024 My Flask App. All rights reserved.</p>
+{% endblock %}

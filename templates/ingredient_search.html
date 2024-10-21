@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+Search Ingredient
+{% endblock %}
+
+{% block content %}
+<h2>Search for an Ingredient</h2>
+<form method="POST" action="{{ url_for('ingredient_search') }}">
+    {{ form.hidden_tag() }} 
+    <div>
+        {{ form.ingredient_name.label }} {{ form.ingredient_name() }}
+    </div>
+    {{ form.submit() }}
+</form>
+{% endblock %}
+
+
